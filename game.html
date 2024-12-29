@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-Up - Deni TopUp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Top-Up for <span id="gameName"></span></h1>
+    </header>
+    <main>
+        <section id="topupSection">
+            <h3>Select Top-Up Packages</h3>
+            <div class="package-list" id="packageList">
+                <!-- Package cards will be inserted dynamically -->
+            </div>
+            <div id="totalPrice" class="total-price">
+                <h4>Total: <span id="priceAmount">0</span></h4>
+            </div>
+            <form id="topUpForm">
+                <label for="userId">Enter User ID:</label>
+                <input type="text" id="userId" name="userId" required>
+                <br><br>
+                <button type="submit">Pay</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        // Get the game parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedGame = urlParams.get('game');
+        document.getElementById('gameName').innerText = selectedGame.charAt(0).toUpperCase() + selectedGame.slice(1);
+
+        // Data for top-up packages for each game
+        const gamePackages = {
+            game1: { '10 Coins': 10, '20 Coins': 20, '50 Coins': 50 },
+            game2: { '15 Coins': 15, '30 Coins': 30, '60 Coins': 60 },
+            game3: { '25 Coins': 25, '50 Coins': 50, '100 Coins': 100 },
+            game4: { '5 Coins': 5, '10 Coins': 10, '25 Coins': 25 },
+            game5: { '30 Coins': 30, '60 Coins': 60, '120 Coins': 120 },
+            game6: { '10 Coins': 10, '25 Coins': 25, '50 Coins': 50 },
+            game7: { '20 Coins': 20, '40 Coins': 40, '80 Coins': 80 },
+            game8: { '50 Coins': 50, '100 Coins': 100, '200 Coins': 200 },
+            game9: { '5 Coins': 5, '10 Coins': 10, '20 Coins': 20 },
+            game10: { '30 Coins': 30, '70 Coins': 70, '150 Coins': 150 }
+        };
+
+        // Get the package list for the selected game
+        const selectedPackages = gamePackages[selectedGame];
+        const packageListDiv = document.getElementById('packageList');
+
+        // Dynamically create package cards
+        for (const [packageName, price] of Object.entries(selectedPackages)) {
+            const packageCard = document.createElement('div');
+            packageCard.classList.add('package-card');
+            packageCard.innerHTML = `
+                <div class="package-name">${packageName}</div>
+                <div class="package-price">${price} Coins</div>
+            `;
+            packageCard.onclick = () => selectPackage(packageName, price, packageCard);
+            packageListDiv.appendChild(packageCard);
+        }
+
+        // To store selected packages and their prices
+        let selectedPackagesArray = [];
+        let totalPrice = 0;
+
+        // Function to handle package selection
+        function selectPackage(packageName, price, card) {
+            const index = selectedPackagesArray.findIndex(item => item.name === packageName);
+            
+            if (index === -1) {
+                // Add package if not selected
+                selectedPackagesArray.push({ name: packageName, price: price });
+                card.classList.add('selected');
+            } else {
+                // Remove package if already selected
+                selectedPackagesArray.splice(index, 1);
+                card.classList.remove('selected');
+            }
+            updateTotalPrice();
+        }
+
+        // Update the total price
+        function updateTotalPrice() {
+            totalPrice = selectedPackagesArray.reduce((sum, packageItem) => sum + packageItem.price, 0);
+            document.getElementById('priceAmount').textContent = totalPrice;
+        }
+
+        // Handle form submission (checkout)
+        document.getElementById('topUpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (selectedPackagesArray.length > 0 && document.getElementById('userId').value) {
+                alert(`Top-up successful! You have purchased: \n${selectedPackagesArray.map(item => `${item.name} - ${item.price} Coins`).join('\n')}.\nTotal: ${totalPrice} Coins.`);
+                window.location.href = 'index.html'; // Redirect to home page
+            } else {
+                alert('Please select at least one package and enter your User ID.');
+            }
+        });
+    </script>
+</body>
+</html>

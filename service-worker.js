@@ -19,7 +19,6 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate Service Worker
 self.addEventListener('activate', event => {
     const cacheWhitelist = [cacheName];
     event.waitUntil(
@@ -35,7 +34,6 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch from cache
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {

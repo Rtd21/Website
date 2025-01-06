@@ -44,7 +44,7 @@
             'FC Mobile': { '50 Diamonds': 50000, '100 Diamonds': 100, '200 Diamonds': 200000 },
             'Roblox': { '5 Diamonds': 5000, '10 Diamonds': 10000, '20 Diamonds': 20000 },
             'Steam': { '30 Diamonds': 30000, '70 Diamonds': 70000, '150 Diamonds': 150000 },
-            'zepeto': { '12 Diamonds': 12000, '60 Diamonds': 60000, '130 Diamonds': 130000 },
+            'Zepeto': { '12 Diamonds': 12000, '60 Diamonds': 60000, '130 Diamonds': 130000 },
             'Growtopia': { '22 Diamonds': 22000, '65 Diamonds': 65000, '200 Diamonds': 200000 },
         };
 
@@ -69,11 +69,9 @@
             const index = selectedPackagesArray.findIndex(item => item.name === packageName);
             
             if (index === -1) {
-                // Add package if not selected
                 selectedPackagesArray.push({ name: packageName, price: price });
                 card.classList.add('selected');
             } else {
-                // Remove package if already selected
                 selectedPackagesArray.splice(index, 1);
                 card.classList.remove('selected');
             }

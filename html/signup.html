@@ -35,13 +35,12 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Simpan data pengguna di Local Storage
             const users = JSON.parse(localStorage.getItem('users')) || [];
             users.push({ username, email, password });
             localStorage.setItem('users', JSON.stringify(users));
 
             alert('Sign up successful!');
-            window.location.href = '../index.html'; // Redirect ke login
+            window.location.href = '../index.html';
         });
     </script>
 </body>

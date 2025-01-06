@@ -35,15 +35,13 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Ambil data pengguna dari Local Storage
             const users = JSON.parse(localStorage.getItem('users')) || [];
 
-            // Cek apakah email dan password cocok
             const user = users.find(user => user.username === username && user.password === password);
 
             if (user || username == "admin" && password == "admin") {
                 alert('Login successful!');
-                window.location.href = '/html/home.html' ; // Redirect ke halaman utama
+                window.location.href = '/html/home.html' ;
             } else {
                 alert('Username atau password tidak valid. Coba lagi.');
             }

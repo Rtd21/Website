@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-Up - Deni TopUp</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="/gambar/logo.jpg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Top-Up <span id="gameName"></span></h1>
+    </header>
+    <main>
+        <section id="topupSection">
+            <h3>Pilih paket</h3>
+            <div class="package-list" id="packageList">
+            </div>
+            <div id="totalPrice" class="total-price">
+                <h4>Total: <span id="priceAmount">0</span></h4>
+            </div>
+            <form id="topUpForm">
+                <label for="userId">ID Game:</label>
+                <input type="text" id="userId" name="userId" required>
+                <br><br>
+                <button type="submit">Bayar</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedGame = urlParams.get('game');
+        document.getElementById('gameName').innerText = selectedGame.charAt(0).toUpperCase() + selectedGame.slice(1);
+
+        const gamePackages = {
+            'Mobile Legends': { '10 Diamonds': 10000, '20 Diamonds': 20000, '50 Diamonds': 50000 },
+            'Free Fire': { '15 Diamonds': 15000, '30 Diamonds': 30000, '60 Diamonds': 60000 },
+            'Genshin Impact': { '25 Diamonds': 25000, '50 Diamonds': 50000, '100 Diamonds': 100000 },
+            'Honor of Kings': { '5 Diamonds': 5000, '10 Diamonds': 10000, '25 Diamonds': 25000 },
+            'PUBG Mobile': { '30 Diamonds': 30000, '60 Diamonds': 60000, '120 Diamonds': 120000 },
+            'Valorant': { '10 Diamonds': 10000, '25 Diamonds': 25000, '50 Diamonds': 50000 },
+            'Call of Duty Mobile': { '20 Diamonds': 20000, '40 Diamonds': 40000, '80 Diamonds': 80000 },
+            'FC Mobile': { '50 Diamonds': 50000, '100 Diamonds': 100, '200 Diamonds': 200000 },
+            'Roblox': { '5 Diamonds': 5000, '10 Diamonds': 10000, '20 Diamonds': 20000 },
+            'Steam': { '30 Diamonds': 30000, '70 Diamonds': 70000, '150 Diamonds': 150000 },
+            'zepeto': { '12 Diamonds': 12000, '60 Diamonds': 60000, '130 Diamonds': 130000 },
+            'Growtopia': { '22 Diamonds': 22000, '65 Diamonds': 65000, '200 Diamonds': 200000 },
+        };
+
+        const selectedPackages = gamePackages[selectedGame];
+        const packageListDiv = document.getElementById('packageList');
+
+        for (const [packageName, price] of Object.entries(selectedPackages)) {
+            const packageCard = document.createElement('div');
+            packageCard.classList.add('package-card');
+            packageCard.innerHTML = `
+                <div class="package-name">${packageName}</div>
+                <div class="package-price">${price} Rupiah</div>
+            `;
+            packageCard.onclick = () => selectPackage(packageName, price, packageCard);
+            packageListDiv.appendChild(packageCard);
+        }
+
+        let selectedPackagesArray = [];
+        let totalPrice = 0;
+
+        function selectPackage(packageName, price, card) {
+            const index = selectedPackagesArray.findIndex(item => item.name === packageName);
+            
+            if (index === -1) {
+                // Add package if not selected
+                selectedPackagesArray.push({ name: packageName, price: price });
+                card.classList.add('selected');
+            } else {
+                // Remove package if already selected
+                selectedPackagesArray.splice(index, 1);
+                card.classList.remove('selected');
+            }
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            totalPrice = selectedPackagesArray.reduce((sum, packageItem) => sum + packageItem.price, 0);
+            document.getElementById('priceAmount').textContent = totalPrice;
+        }
+
+        document.getElementById('topUpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (selectedPackagesArray.length > 0 && document.getElementById('userId').value) {
+                alert(`Top-up berhasil! You telah membelinya: \n${selectedPackagesArray.map(item => `${item.name} - ${item.price} Rupiah`).join('\n')}.\nTotal: ${totalPrice} Rupiah.`);
+                window.location.href = 'home.html';
+            } else {
+                alert('Pilih setidaknya satu paket dan masukkan game ID.');
+            }
+        });
+    </script>
+</body>
+</html>

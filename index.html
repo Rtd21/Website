@@ -25,7 +25,7 @@
 
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="/html/signup.html">Sign Up</a></p>
+        <p>Belum memiliki akun? <a href="/html/signup.html">Sign Up</a></p>
     </main>
 
     <script>
@@ -40,7 +40,7 @@
             const user = users.find(user => user.username === username && user.password === password);
 
             if (user || username == "admin" && password == "admin") {
-                alert('Login successful!');
+                alert('Login berhasil!');
                 window.location.href = '/html/home.html' ;
             } else {
                 alert('Username atau password tidak valid. Coba lagi.');

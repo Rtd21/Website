@@ -87,7 +87,7 @@
             e.preventDefault();
 
             if (selectedPackagesArray.length > 0 && document.getElementById('userId').value) {
-                alert(`Top-up berhasil! You telah membelinya: \n${selectedPackagesArray.map(item => `${item.name} - ${item.price} Rupiah`).join('\n')}.\nTotal: ${totalPrice} Rupiah.`);
+                alert(`Top-up berhasil! Anda telah membeli: \n${selectedPackagesArray.map(item => `${item.name} - ${item.price} Rupiah`).join('\n')}.\nTotal: ${totalPrice} Rupiah.`);
                 window.location.href = 'home.html';
             } else {
                 alert('Pilih setidaknya satu paket dan masukkan game ID.');
